@@ -1,16 +1,9 @@
 import scala.io.Source
 
 object AdventOfCode {
-  def main(args: Array[String]): Unit = {   
-    //Not an efficient solution
+  def main(args: Array[String]): Unit = {      
     val lines = Source.fromFile("input").getLines.toList;
-    println(lines.filter(x=>countOcurrences(x).exists(y=>y==2)).length *
-     lines.filter(x=>countOcurrences(x).exists(y=>y==3)).length)
-  }
-
-  def countOcurrences(id:String) : Array[Int] = {
-    val ocurrences = Array.fill(26)(0)
-    id.map(x=> ocurrences(x-'a')+= 1)
-    ocurrences
-  }
+    println(lines.filter(x=>x.groupBy(identity).mapValues(_.size).toSeq.exists(y => y._2 == 2)).length *
+     lines.filter(x=>x.groupBy(identity).mapValues(_.size).toSeq.exists(y => y._2 == 3)).length)
+  }  
 }
