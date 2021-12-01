@@ -14,6 +14,7 @@ def day1_1():
 
 
 def day1_2():
+    "Count the number of time it increases as sliding window"
     data = get_data(1, int)
     count = 0
     index = 0
