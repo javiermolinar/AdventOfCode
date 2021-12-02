@@ -13,9 +13,7 @@ def day2_1():
 def day2_2():
     "Return the multiplication of depth and horizontal lengh with aim"
     data = [(st.split(" ")[0], int(st.split(" ")[1])) for st in get_data(2, str)]
-    aim = 0
-    horizontal = 0
-    depth = 0
+    aim = horizontal = depth = 0
     for measurement, unit in data:
         match measurement:
             case "forward":
@@ -26,6 +24,3 @@ def day2_2():
             case "up":
                 aim -= unit
     return horizontal * depth
-
-
-print(day2_1())
