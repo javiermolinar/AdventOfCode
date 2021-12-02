@@ -15,13 +15,13 @@ def day2_2():
     aim = 0
     horizontal = 0
     depth = 0
-    for movement, unit in [(x.split(" ")[0], int(x.split(" ")[1])) for x in data]:
-        match movement:
-            case "forward":
-                horizontal += unit
-                depth += aim * unit
-            case "down":
-                aim += unit
-            case "up":
-                aim -= unit
+    for measurement in data:
+        match measurement.split(" "):
+            case ["forward", unit]:
+                horizontal += int(unit)
+                depth += aim * int(unit)
+            case ["down", unit]:
+                aim += int(unit)
+            case ["up", unit]:
+                aim -= int(unit)
     return horizontal * depth
