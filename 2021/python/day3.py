@@ -20,7 +20,7 @@ def day3_2() -> int:
     ) -> int:
         if len(data) == 1:
             return to_int(data[0])
-        sum_results = [sum(int(num[i]) for num in data) for i, _ in enumerate(data[0])]
+        sum_results = [sum(int(num[i]) for num in data) for i in range(len(data[0]))]
         common = [get_common_value(x, len(data) / 2) for x in sum_results]
         selected_numbers = [x for x in data if int(x[index]) == common[index]]
         return get_rating(selected_numbers, index + 1, get_common_value)
@@ -29,6 +29,3 @@ def day3_2() -> int:
     oxigen_rating = get_rating(data, 0, lambda value, t: 1 if value >= t else 0)
     co2_rating = get_rating(data, 0, lambda value, t: 1 if value < t else 0)
     return oxigen_rating * co2_rating
-
-
-print(day3_1())
