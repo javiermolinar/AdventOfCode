@@ -1,4 +1,4 @@
-from typing import List
+from typing import Callable, List
 from utils import get_data
 
 
@@ -16,24 +16,19 @@ def day3_1():
 
 
 def day3_2():
-    def get_rating(data: List[str], most_common: bool = True) -> int:
+    def get_rating(data: List[str], f: Callable[[int, int], int]) -> int:
         index = 0
         rating = data[:]
         while len(rating) > 1:
             sum_results = [
                 sum(int(num[i]) for num in rating) for i, _ in enumerate(rating[0])
             ]
-            if most_common:
-                gamma = [(1 if x >= len(rating) / 2 else 0) for x in sum_results]
-            else:
-                gamma = [(1 if x < len(rating) / 2 else 0) for x in sum_results]
+            gamma = [f(x, len(rating) / 2) for x in sum_results]
             rating = [x for x in rating if int(x[index]) == gamma[index]]
             index += 1
         return to_int(rating[0])
 
     data = get_data(3, str)
-
-    return get_rating(data) * get_rating(data, False)
-
-
-print(day3_2())
+    oxigen_rating = get_rating(data, lambda value, t: 1 if value >= t else 0)
+    co2_rating = get_rating(data, lambda value, t: 1 if value < t else 0)
+    return oxigen_rating * co2_rating
