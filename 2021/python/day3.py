@@ -16,19 +16,17 @@ def day3_1() -> int:
 
 
 def day3_2() -> int:
-    def get_rating(data: List[str], f: Callable[[int, int], int]) -> int:
-        index = 0
-        rating = data[:]
-        while len(rating) > 1:
-            sum_results = [
-                sum(int(num[i]) for num in rating) for i, _ in enumerate(rating[0])
-            ]
-            common = [f(x, len(rating) / 2) for x in sum_results]
-            rating = [x for x in rating if int(x[index]) == common[index]]
-            index += 1
-        return to_int(rating[0])
+    def get_rating(
+        data: List[str], index: int, get_common_value: Callable[[int, int], int]
+    ) -> int:
+        if len(data) == 1:
+            return to_int(data[0])
+        sum_results = [sum(int(num[i]) for num in data) for i, _ in enumerate(data[0])]
+        common = [get_common_value(x, len(data) / 2) for x in sum_results]
+        selected_numbers = [x for x in data if int(x[index]) == common[index]]
+        return get_rating(selected_numbers, index + 1, get_common_value)
 
     data = get_data(3, str)
-    oxigen_rating = get_rating(data, lambda value, t: 1 if value >= t else 0)
-    co2_rating = get_rating(data, lambda value, t: 1 if value < t else 0)
+    oxigen_rating = get_rating(data, 0, lambda value, t: 1 if value >= t else 0)
+    co2_rating = get_rating(data, 0, lambda value, t: 1 if value < t else 0)
     return oxigen_rating * co2_rating
