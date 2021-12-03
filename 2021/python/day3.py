@@ -6,7 +6,7 @@ def to_int(bin_num: List[int]) -> int:
     return int("".join(map(str, bin_num)), 2)
 
 
-def day3_1():
+def day3_1() -> int:
     "Return the multiplication of depth and horizontal lengh"
     data = get_data(3, str)
     sum_results = [sum(int(num[i]) for num in data) for i, _ in enumerate(data[0])]
@@ -15,7 +15,7 @@ def day3_1():
     return to_int(gamma) * to_int(epsilon)
 
 
-def day3_2():
+def day3_2() -> int:
     def get_rating(data: List[str], f: Callable[[int, int], int]) -> int:
         index = 0
         rating = data[:]
@@ -23,8 +23,8 @@ def day3_2():
             sum_results = [
                 sum(int(num[i]) for num in rating) for i, _ in enumerate(rating[0])
             ]
-            gamma = [f(x, len(rating) / 2) for x in sum_results]
-            rating = [x for x in rating if int(x[index]) == gamma[index]]
+            common = [f(x, len(rating) / 2) for x in sum_results]
+            rating = [x for x in rating if int(x[index]) == common[index]]
             index += 1
         return to_int(rating[0])
 
