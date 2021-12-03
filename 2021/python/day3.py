@@ -7,7 +7,6 @@ def to_int(bin_num: List[int]) -> int:
 
 
 def day3_1() -> int:
-    "Return the multiplication of depth and horizontal lengh"
     data = get_data(3, str)
     sum_results = [sum(int(num[i]) for num in data) for i, _ in enumerate(data[0])]
     gamma = [(1 if x > len(data) / 2 else 0) for x in sum_results]
