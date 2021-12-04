@@ -58,4 +58,4 @@ def day4_1() -> int:
 
 
 def day4_2() -> int:
-    return get_score(*get_last_winner_bingo(*get_bingo_data))
+    return get_score(*get_last_winner_bingo(*get_bingo_data()))
