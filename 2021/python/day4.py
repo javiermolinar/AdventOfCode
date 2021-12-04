@@ -34,28 +34,21 @@ def is_winner_bingo(bingo, number):
                     return (bingo, number)
 
 
-def get_winner_bingo(input, bingos):
+def get_winners_bingo(input, bingos):
+    winners = []
     for number in input:
         for bingo in bingos:
             if is_winner_bingo(bingo, number):
-                return (bingo, number)
-
-
-def get_last_winner_bingo(input, bingos):
-    last_winner_bingo = []
-    for number in input:
-        for bingo in bingos:
-            if is_winner_bingo(bingo, number):
-                last_winner_bingo = bingo
+                winners.append(get_score(bingo, number))
                 bingos.remove(bingo)
                 if len(bingos) == 1:
-                    return (bingo, number)
-    return (last_winner_bingo, input[-1])
+                    return winners
+    return winners
 
 
 def day4_1() -> int:
-    return get_score(*get_winner_bingo(*get_bingo_data()))
+    return get_winners_bingo(*get_bingo_data())[0]
 
 
 def day4_2() -> int:
-    return get_score(*get_last_winner_bingo(*get_bingo_data()))
+    return get_winners_bingo(*get_bingo_data())[-1]
