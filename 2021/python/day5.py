@@ -30,13 +30,11 @@ def get_points(vent_lines):
 
 
 def day5_1():
-    lines = [
-        lines
-        for lines in vents
-        if lines[0][0] == lines[1][0] or lines[0][1] == lines[1][1]
-    ]
+    "Get intersected cells between horizontal and vertical lines"
+    lines = [lines for lines in vents if lines[0][0] == lines[1][0] or lines[0][1] == lines[1][1]]
     print(get_points(lines))
 
 
 def day5_2():
+    "Get intersected cells between horizontal, vertical and diagonal lines"
     print(get_points(vents))

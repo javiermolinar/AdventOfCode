@@ -15,9 +15,7 @@ def day3_1() -> int:
 
 
 def day3_2() -> int:
-    def get_rating(
-        data: List[str], index: int, get_common_value: Callable[[int, int], int]
-    ) -> int:
+    def get_rating(data: List[str], index: int, get_common_value: Callable[[int, int], int]) -> int:
         if len(data) == 1:
             return to_int(data[0])
         sum_results = [sum(int(num[i]) for num in data) for i in range(len(data[0]))]

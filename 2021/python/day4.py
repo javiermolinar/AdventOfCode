@@ -9,18 +9,14 @@ def get_bingo_data():
     data = get_data(4, str)
     input = [int(x) for x in data.pop(0).split(",")]
     cells = [
-        [Cell(int(b), False) for b in a if b != ""]
-        for a in [x.split(" ") for x in [z for z in data if len(z) > 1]]
+        [Cell(int(b), False) for b in a if b != ""] for a in [x.split(" ") for x in [z for z in data if len(z) > 1]]
     ]
     bingos = [cells[i : i + 5] for i in range(0, len(cells), 5)]
     return (input, bingos)
 
 
 def get_score(bingo, last_number):
-    return (
-        sum([sum([x.number for x in line if not x.marked]) for line in bingo])
-        * last_number
-    )
+    return sum([sum([x.number for x in line if not x.marked]) for line in bingo]) * last_number
 
 
 def is_winner_bingo(bingo, number):
@@ -47,8 +43,10 @@ def get_winners_bingo(input, bingos):
 
 
 def day4_1() -> int:
+    "Get first winner bingo"
     return get_winners_bingo(*get_bingo_data())[0]
 
 
 def day4_2() -> int:
+    "Get last winner bingo"
     return get_winners_bingo(*get_bingo_data())[-1]
