@@ -1,5 +1,4 @@
 from utils import get_data
-from collections import deque
 
 
 def day6(days):
@@ -15,20 +14,20 @@ def day6(days):
 
 def day6_2(days):
     "Given a list of fishes calculate the number of fishes after N days"
+    days += 1
     initial_fishes = [int(x) for x in get_data(6, str)[0].split(",")]
-    fishes = 0
+    fishes_per_day = [0] * days
+    fishes_per_day[0] = len(initial_fishes)
     for fish in initial_fishes:
-        fishes += 1
-        parent_fish = abs(0 - fish) + 1
-        queue = deque([parent_fish])
-        while len(queue) != 0:
-            while parent_fish < days and parent_fish + 7 <= days:
-                parent_fish += 7
-                queue.append(parent_fish)
-            parent_fish = queue.popleft()
-            parent_fish += 2
-            fishes += 1
-    return fishes
+        fishes_per_day[abs(0 - fish) + 1] += 1
+        next_day = abs(0 - fish) + 8
+        while next_day < days:
+            fishes_per_day[next_day] += 1
+            next_day += 7
 
-
-print(day6_2(18))
+    for day in range(1, days):
+        next_day = day + 9
+        while next_day < days:
+            fishes_per_day[next_day] += fishes_per_day[day]
+            next_day += 7
+    return sum(fishes_per_day)
