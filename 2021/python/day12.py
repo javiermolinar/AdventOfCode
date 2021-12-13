@@ -1,9 +1,5 @@
 from utils import get_data
-from collections import namedtuple
 from collections import deque
-
-Node = namedtuple("Node", ["cave", "childs"])
-data = [(x.split("-")) for x in get_data(12)]
 
 
 def get_next_caves(cave_name, visited, map, allow_small_caves):
@@ -17,23 +13,22 @@ def get_next_caves(cave_name, visited, map, allow_small_caves):
     )
 
 
-def build_paths(node, map, visited, allow_small_caves=False):
-    if node.cave == "end":
-        visited.popleft()
-        return 1
-    paths = 0
-    for cave_name in get_next_caves(node.cave, visited, map, allow_small_caves):
-        cave = Node(cave_name, [])
-        node.childs.append(cave)
-        visited.appendleft(cave_name)
-        paths += build_paths(cave, map, visited, allow_small_caves)
+def build_paths(cave_name, map, visited, allow_small_caves=False):
+    paths = 1
+    if cave_name != "end":
+        paths = sum(
+            [
+                build_paths(cave, map, deque([*visited, cave]), allow_small_caves)
+                for cave in get_next_caves(cave_name, visited, map, allow_small_caves)
+            ]
+        )
     visited.popleft()
     return paths
 
 
 def day12_1():
-    print(build_paths(Node("start", []), data, deque(["start"])))
+    print(build_paths("start", [(x.split("-")) for x in get_data(12)], deque(["start"])))
 
 
 def day12_2():
-    print(build_paths(Node("start", []), data, deque(["start"]), True))
+    print(build_paths("start", [(x.split("-")) for x in get_data(12)], deque(["start"]), True))
