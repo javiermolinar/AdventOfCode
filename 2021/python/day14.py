@@ -14,7 +14,7 @@ def get_polymerization(steps, template, rules):
             pairs[f"{rules[pair]}{pair[1]}"] += count
         for pair, count in previous_counts:
             pairs[pair] -= count
-    return max(counts.values()) - min([x for x in counts.values() if x > 0)
+    return max(counts.values()) - min([x for x in counts.values() if x > 0])
 
 
 template = get_data(14)[0]
