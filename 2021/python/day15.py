@@ -1,6 +1,7 @@
 from utils import get_data
 import sys
 import heapq
+import time
 
 data = [[int(x) for x in y] for y in get_data(15)]
 
@@ -50,4 +51,10 @@ def day15_2():
         for j in range(len(data[0]) * 5):
             sum = data[i % len(data)][j % len(data[0])] + int(j / len(data[0])) + int(i / len(data))
             big_data[i][j] = sum if sum <= 9 else sum % 9
+    start = time.time()
     print(get_min_path(big_data))
+    end = time.time()
+    print(end - start)
+
+
+day15_2()
