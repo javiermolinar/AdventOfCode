@@ -21,6 +21,3 @@ def day1_2():
     calories = [calory for calory in get_calories()]
     calories.sort(reverse=True)
     return sum(calories[:3])
-
-
-print(day1_2())
