@@ -25,5 +25,9 @@ def day2_2():
         return [hand[1] for hand in filtered_hands if outcomes[hand] == outcome][0]
 
     b_hands = [get_desired_hand(a_hand, match_outcome[outcome]) for a_hand, outcome in hands]
-    a_hands = [a_hand for a_hand, _ in hands]
-    return sum([round_outcome(b_hand, hand_result(a_hand, b_hand)) for a_hand, b_hand in zip(a_hands, b_hands)])
+    return sum(
+        [
+            round_outcome(b_hand, hand_result(a_hand, b_hand))
+            for a_hand, b_hand in zip([a_hand for a_hand, _ in hands], b_hands)
+        ]
+    )
