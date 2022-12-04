@@ -14,15 +14,16 @@ def round_outcome(hand, hand_result):
 
 
 def day2_1():
+    "Get the outcome of all the rounds"
     return sum([round_outcome(b_hand, hand_result(a_hand, b_hand)) for a_hand, b_hand in hands])
 
 
 def day2_2():
+    "Get the sum of outcomes of all the rounds for the desired hand"
     match_outcome = {"X": 0, "Y": 3, "Z": 6}
 
     def get_desired_hand(a_hand, outcome):
-        filtered_hands = [hand for hand in outcomes.keys() if hand[0] == a_hand]
-        return [hand[1] for hand in filtered_hands if outcomes[hand] == outcome][0]
+        return [hand[1] for hand in outcomes.keys() if hand[0] == a_hand and outcomes[hand] == outcome][0]
 
     b_hands = [get_desired_hand(a_hand, match_outcome[outcome]) for a_hand, outcome in hands]
     return sum(
