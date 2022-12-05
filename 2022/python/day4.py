@@ -15,4 +15,4 @@ def day4_1():
 
 
 def day4_2():
-    return get_results(lambda r1, r2: 1 if r1.intersection(r2) else 0)
+    return get_results(lambda r1, r2: 1 if r1 & r2 else 0)
