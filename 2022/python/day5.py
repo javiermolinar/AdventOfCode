@@ -18,14 +18,13 @@ def get_movements(mov):
 
 
 data = get_data(5)
-split = data.index("")
-crates_stacks, movements = (get_initial_stacks(data[:split]), get_movements(data[split + 1 :]))
+crates_stacks, movements = (get_initial_stacks(data[: data.index("")]), get_movements(data[data.index("") + 1 :]))
 
 
 def day5_1():
     for move in movements:
-        crate = crates_stacks[move[1] - 1].popleft()
-        crates_stacks[move[2] - 1].extendleft(crate)
+        crates = [crates_stacks[move[1] - 1].popleft() for _ in range(move[0])]
+        crates_stacks[move[2] - 1].extendleft(crates)
     return "".join([stack.popleft() for stack in [s for s in crates_stacks]])
 
 
