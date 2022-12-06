@@ -34,3 +34,6 @@ def day5_2():
         crates.reverse()
         crates_stacks[move[2] - 1].extendleft(crates)
     return "".join([stack.popleft() for stack in [s for s in crates_stacks]])
+
+
+print(day5_1())
