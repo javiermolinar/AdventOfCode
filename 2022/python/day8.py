@@ -1,16 +1,7 @@
 from utils import get_data
-
-
-def is_visible(i, j, trees):
-    tree = int(trees[i][j])
-    if i == 0 or i == len(trees) - 1 or j == 0 or j == len(trees) - 1:
-        return True
-    return (
-        max([int(trees[x][j]) for x in range(0, i)]) < tree
-        or max([int(trees[x][j]) for x in range(i + 1, len(trees))]) < tree
-        or max([int(trees[i][x]) for x in range(0, j)]) < tree
-        or max([int(trees[i][x]) for x in range(j + 1, len(trees))]) < tree
-    )
+from functools import reduce
+from itertools import chain
+import operator
 
 
 def scenic_score(i, j, trees):
@@ -22,27 +13,22 @@ def scenic_score(i, j, trees):
             score += 1
             if t >= tree:
                 return score
-
         return score
 
-    tree = int(trees[i][j])
-    top = get_score(tree, [int(trees[x][j]) for x in range(0, i)], True)
-    bottom = get_score(tree, [int(trees[x][j]) for x in range(i + 1, len(trees))])
-    left = get_score(tree, [int(trees[i][x]) for x in range(0, j)], True)
-    right = get_score(tree, [int(trees[i][x]) for x in range(j + 1, len(trees))])
-    return top * bottom * left * right
+    sides = [
+        ([int(trees[x][j]) for x in range(0, i)], True),
+        ([int(trees[x][j]) for x in range(i + 1, len(trees))], False),
+        ([int(trees[i][x]) for x in range(0, j)], True),
+        ([int(trees[i][x]) for x in range(j + 1, len(trees))], False),
+    ]
+    is_visible = len([True for x, _ in sides if len(x) == 0 or max(x) < int(trees[i][j])]) > 0
+    score = reduce(operator.mul, [get_score(int(trees[i][j]), side, reverse) for side, reverse in sides], 1)
+    return (is_visible, score)
 
 
-visibles = 0
-best_score = 0
 input = get_data(8)
-for i in range(len(input)):
-    for j in range(len(input)):
-        if is_visible(i, j, input):
-            visibles += 1
-            score = scenic_score(i, j, input)
-            if score > best_score:
-                best_score = score
+values = list(chain(*[[scenic_score(i, j, input) for j in range(len(input))] for i in range(len(input))]))
+scores = [score for visible, score in values if visible]
 
-print(f"1: {visibles}")
-print(f"2: {best_score}")
+print(f"1:{len(scores)}")
+print(f"2:{max(scores)}")
