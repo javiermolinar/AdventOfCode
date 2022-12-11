@@ -2,46 +2,34 @@ from utils import get_data
 
 input = get_data(9)
 
-head_pos = [0, 0]
-tail_pos = [0, 0]
-visited = {(0, 0): 1}
 
-
-def updated_visited(visited, position):
-    if position in visited:
-        visited[position] += 1
-    else:
-        visited[position] = 1
-
-
-def move_tail(head_pos, tail_pos, direction, visited):
-    if head_pos[0] == tail_pos[0]:  # Same row
+def move_tail(head_pos, knot_pos, direction):
+    if head_pos[0] == knot_pos[0]:  # Same row
         if direction == "L":
-            tail_pos[1] -= 1
+            knot_pos[1] -= 1
         else:
-            tail_pos[1] += 1
-    elif head_pos[1] == tail_pos[1]:  # Same column
+            knot_pos[1] += 1
+    elif head_pos[1] == knot_pos[1]:  # Same column
         if direction == "U":
-            tail_pos[0] -= 1
+            knot_pos[0] -= 1
         else:
-            tail_pos[0] += 1
+            knot_pos[0] += 1
     else:  # Diagonal
-        if head_pos[0] > tail_pos[0]:
-            tail_pos[0] += 1
-            if head_pos[1] < tail_pos[1]:
-                tail_pos[1] -= 1
+        if head_pos[0] > knot_pos[0]:
+            knot_pos[0] += 1
+            if head_pos[1] < knot_pos[1]:
+                knot_pos[1] -= 1
             else:
-                tail_pos[1] += 1
+                knot_pos[1] += 1
         else:
-            tail_pos[0] -= 1
-            if head_pos[1] < tail_pos[1]:
-                tail_pos[1] -= 1
+            knot_pos[0] -= 1
+            if head_pos[1] < knot_pos[1]:
+                knot_pos[1] -= 1
             else:
-                tail_pos[1] += 1
-    updated_visited(visited, (tail_pos[0], tail_pos[1]))
+                knot_pos[1] += 1
 
 
-def move(head_pos, tail_pos, direction, movements, visited):
+def move(head_pos, knots, direction, movements, visited):
     for i in range(movements):
         match direction:
             case "L":
@@ -53,11 +41,38 @@ def move(head_pos, tail_pos, direction, movements, visited):
             case "D":
                 head_pos[0] += 1
 
-        should_move_tail = abs(head_pos[0] - tail_pos[0]) >= 2 or abs(head_pos[1] - tail_pos[1]) >= 2
-        if should_move_tail:
-            move_tail(head_pos, tail_pos, direction, visited)
+        head = (head_pos[0], head_pos[1])
+        i = 0
+        while abs(head[0] - knots[i][0]) >= 2 or abs(head[1] - knots[i][1]) >= 2:
+            move_tail(head, knots[i], direction)
+            head = (knots[i][0], knots[i][1])
+            i += 1
+            if i == len(knots):
+                break
+
+        if (knots[-1][0], knots[-1][1]) not in visited:
+            visited.add((knots[-1][0], knots[-1][1]))
 
 
-for line in input:
-    direction, movements = line.split(" ")
-    move(head_pos, tail_pos, direction, int(movements), visited)
+def day9_1():
+    visited = {(0, 0)}
+    head = [0, 0]
+    knots = [[0, 0] for _ in range(1)]
+
+    for line in input:
+        direction, movements = line.split(" ")
+        move(head, knots, direction, int(movements), visited)
+
+
+def day9_2():
+    visited = {(0, 0)}
+    head = [0, 0]
+    knots = [[0, 0] for _ in range(9)]  # This should work the same but it doesn't -_-
+
+    for line in input:
+        direction, movements = line.split(" ")
+        move(head, knots, direction, int(movements), visited)
+    print(len(visited))
+
+
+day9_2()
